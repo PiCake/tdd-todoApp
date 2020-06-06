@@ -25,7 +25,7 @@ SECRET_KEY = '621do9b4ln+7%g8k@9t7cb@80@o!8jcuo#n7rh+=aoeuybb7t!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.124.3.36']
+ALLOWED_HOSTS = ['tdd-todo.website']
 
 
 # Application definition
