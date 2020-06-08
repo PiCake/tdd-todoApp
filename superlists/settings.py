@@ -120,3 +120,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+if 'DJANGO_DEBUG_FALSE' in os.environ:
+	DEBUG = False
+	SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+	ALLOWED_HOSTS = [os.environ['SITENAME']]
+else:
+	DEBUG = True
+	SECRET_KEY = '621do9b4ln+7%g8k@9t7cb@80@o!8jcuo#n7rh+=aoeuybb7t!'
+	ALLOWED_HOSTS = []
