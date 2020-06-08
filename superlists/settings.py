@@ -128,4 +128,4 @@ if 'DJANGO_DEBUG_FALSE' in os.environ:
 else:
 	DEBUG = True
 	SECRET_KEY = '621do9b4ln+7%g8k@9t7cb@80@o!8jcuo#n7rh+=aoeuybb7t!'
-	ALLOWED_HOSTS = []
+	ALLOWED_HOSTS = ['*']
