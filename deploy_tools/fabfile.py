@@ -33,13 +33,28 @@ def _update_static_files():
 def _update_database():
     run('./virtualenv/bin/python manage.py migrate --noinput')
 
+def _setup_nginx_infra():
+    # replace DOMAIN with production hostname
+    run('cat ./deploy_tools/nginx.template.conf \
+        | sed "s/DOMAIN/superlists-staging.tdd-todo.website/g" \
+        | sudo tee /etc/nginx/sites-available/superlists-staging.tdd-todo.website')
+    run('sudo ln -s /etc/nginx/sites-available/superlists-staging.tdd-todo.website \
+        /etc/nginx/sites-enabled/superlists-staging.tdd-todo.website')
+    run('cat ./deploy_tools/gunicorn-systemd.template.service \
+        | sed "s/DOMAIN/superlists-staging.tdd-todo.website/g" \
+        | sudo tee /etc/systemd/system/gunicorn-superlists-staging.tdd-todo.website.service')
+    run('sudo systemctl daemon-reload')
+    run('sudo systemctl reload nginx')
+    run('sudo systemctl enable gunicorn-superlists-staging.tdd-todo.website')
+    run('sudo systemctl start gunicorn-superlists-staging.tdd-todo.website')
+
 def deploy():
     site_folder = f'/home/{env.user}/sites/{env.host}'
     run(f'mkdir -p {site_folder}')
-
     with cd(site_folder):
         _get_latest_source()
         _update_virtualenv()
         _create_or_update_dotenv()
         _update_static_files()
         _update_database()
+        _setup_nginx_infra()
